@@ -1,5 +1,5 @@
 /**
- * @name Vue Sphere Gallery
+ * Vue Sphere Gallery
  * @description Gallery motion using DeviceOrientationEvent data.
  *              Features:
  *              - Movement is proportional to x and y inclination angle.

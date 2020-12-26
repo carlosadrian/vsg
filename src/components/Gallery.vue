@@ -1,11 +1,13 @@
 <template>
     <section>
         <div class="gallery-clipping">
-            <h3>Gallery</h3>
+            <h3>Gallery {{ btnText }}</h3>
             <span class="lbl do-x"></span><span class="lbl do-y"></span>
             <ul>
-                <!--  :items="items" -->
-                <li v-for="(item) in items" :key="item.id"><img :src="item.src" :alt="item.title" /></li>
+                <!--       :items="items"-->
+                <li v-for="(item) in items" :key="item.id">
+                    <img :src="item.src" :alt="item.title" />
+                </li>
             </ul>
         </div>
     </section>
@@ -13,16 +15,7 @@
 <script lang="ts">
 
     export default {
-        data() {
-            let items = [];
-            for(let i = 1; i <= 11; i++)
-                items.push({id: i, title: 'Title ' + i, src: '/320x548.png'});
-
-            return {
-                items
-            }
-        },
-
+        props: ['items', 'btnText']
     }
 
 </script>

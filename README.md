@@ -10,7 +10,7 @@ It works with Vue to render the gallery and an additional driver in TypeScript f
 
 Although it is Vue based and SFC is being used, it will require some additional steps like transpile TS code.
 
-**SSL is required to get the device orientation permission**
+**SSL is required to get `DeviceOrientationEvent` working**
 
 ## Install & run
 
@@ -29,7 +29,7 @@ It works fine in recent versions of Firefox for iOS as of December 2020.
 For full browser compatibility, take a look at https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation#Browser_compatibility
 
 ### WIP
-Degrees for `gamma` and `beta` are on screen.
+Debug info for `gamma` and `beta` degrees on-screen.
 
 
 *Thank's*
