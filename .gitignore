@@ -1,0 +1,6 @@
+/node_modules
+/dist
+/src/Gallery.js
+/.idea
+package-lock.json
+
