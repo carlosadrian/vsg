@@ -55,8 +55,8 @@ export default class Gallery {
      * e.gamma ◄ ►
      */
     getPosition(e: DeviceOrientationEvent) : GalleryPosition {
-        let gamma = parseFloat(e.gamma.toPrecision(2)),
-            beta = parseFloat(e.beta.toPrecision(2)),
+        let gamma = parseFloat(e.gamma.toPrecision(4)),
+            beta = parseFloat(e.beta.toPrecision(4)),
             posY,
             posX;
 

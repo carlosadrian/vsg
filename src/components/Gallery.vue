@@ -1,10 +1,9 @@
 <template>
     <section>
         <div class="gallery-clipping">
-            <h3>Gallery {{ btnText }}</h3>
+            <h3>Gallery <button type="button" v-if="hasSupport" @click="enableGallery()">Enable the experience</button></h3>
             <span class="lbl do-x"></span><span class="lbl do-y"></span>
             <ul>
-                <!--       :items="items"-->
                 <li v-for="(item) in items" :key="item.id">
                     <img :src="item.src" :alt="item.title" />
                 </li>
@@ -13,9 +12,29 @@
     </section>
 </template>
 <script lang="ts">
+    import Gallery from './../Gallery';
 
     export default {
-        props: ['items', 'btnText']
+        data() {
+            return {
+                hasSupport: false
+            }
+        },
+        props: ['items'],
+        mounted(): void {
+            if(window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
+                let vm = this;
+                vm.$nextTick(function() {
+                    vm.$data.hasSupport = true;
+                });
+            }
+        },
+        methods: {
+            enableGallery() {
+                let g = new Gallery();
+                g.init();
+            }
+        }
     }
 
 </script>

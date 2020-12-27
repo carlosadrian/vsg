@@ -3,4 +3,5 @@
 /src/Gallery.js
 /.idea
 package-lock.json
-
+.env.local
+.env.staging.local
