@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="gallery-clipping">
-            <h3>Gallery <button type="button" v-if="hasSupport" @click="enableGallery()">Enable the experience</button></h3>
+            <h3 v-if="showWelcome">Gallery <button type="button" v-if="hasSupport" @click="enableGallery()">Enable the experience</button></h3>
             <span class="lbl do-x"></span><span class="lbl do-y"></span>
             <ul>
                 <li v-for="(item) in items" :key="item.id">
@@ -17,22 +17,15 @@
     export default {
         data() {
             return {
-                hasSupport: false
+                hasSupport: window.DeviceOrientationEvent && window.DeviceOrientationEvent.requestPermission,
+                showWelcome: true
             }
         },
         props: ['items'],
-        mounted(): void {
-            if(window.DeviceOrientationEvent && DeviceOrientationEvent.requestPermission) {
-                let vm = this;
-                vm.$nextTick(function() {
-                    vm.$data.hasSupport = true;
-                });
-            }
-        },
         methods: {
             enableGallery() {
-                let g = new Gallery();
-                g.init();
+                Gallery.init('.gallery-clipping');
+                this.$data.showWelcome = false;
             }
         }
     }

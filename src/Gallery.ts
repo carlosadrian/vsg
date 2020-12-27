@@ -43,41 +43,39 @@ export default class Gallery {
     };
 
     constructor() {
-        this.element = document.querySelector('.gallery-clipping');
     }
 
     /**
      * Sets gallery position of the top left corner at viewport and returns it
-     * @param e
+     * @param element HTMLElement An element to change position according to event
+     * @param e DeviceOrientationEvent The event returned with proper coordinates
      * e.absolute
      * e.alpha rotation 360 deg
      * e.beta ↕
      * e.gamma ◄ ►
      */
-    getPosition(e: DeviceOrientationEvent) : GalleryPosition {
+    setPosition(element: HTMLElement, e: DeviceOrientationEvent) : GalleryPosition {
         let gamma = parseFloat(e.gamma.toPrecision(4)),
             beta = parseFloat(e.beta.toPrecision(4)),
             posY,
             posX;
 
-        this.element = document.querySelector('.gallery-clipping');
-        this.offsetX = (this.element.clientWidth / 6) + 2;
-        this.offsetY = (this.element.querySelector('ul').clientHeight / 2) + 2;
+        this.offsetX = (element.clientWidth / 6) + 2;
+        this.offsetY = (element.querySelector('ul').clientHeight / 2) + 2;
         this.positionFactorX = 10.2;
         this.positionFactorY = 34.8;
 
         document.querySelector('.do-x').textContent = gamma.toString();
         document.querySelector('.do-y').textContent = beta.toString();
 
-
         // Set coordinates at top / left
         posY = ((beta * this.positionFactorY) - this.offsetY);
         posX = ((gamma * this.positionFactorX) - this.offsetX);
         if(posY < 0)
-            this.element.style.top = posY.toString() + 'px';
+            element.style.top = posY.toString() + 'px';
 
         if(posX < 0)
-            this.element.style.left =  posX.toString() + 'px';
+            element.style.left =  posX.toString() + 'px';
 
         return this.position;
     }
@@ -85,13 +83,16 @@ export default class Gallery {
     /**
      * Handles the permission for device orientation and attaches the event handler.
      */
-    init() : void {
+    static init(selector: string) : void {
         // Event handling
         DeviceOrientationEvent.requestPermission().then(function(response : string) {
             if(response === 'granted') {
-                let gallery = new Gallery();
-                document.querySelector('h3').remove();
-                window.addEventListener('deviceorientation', gallery.getPosition);
+                //document.querySelector('h3').remove();
+                let element = document.querySelector(selector);
+                let g = new Gallery();
+                window.addEventListener('deviceorientation', function(e) {
+                    g.setPosition(element as HTMLElement, e);
+                });
             }
         }).catch(function(e : { message : string, [s : string] : any }) {
             document.querySelector('h3').textContent += ' Nope: ' + e.message;
