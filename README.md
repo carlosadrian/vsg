@@ -1,4 +1,4 @@
-# Vue Sphere Gallery
+# Vue Scrollable Gallery
 
 ***Work in progress***
 
