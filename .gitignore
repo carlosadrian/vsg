@@ -1,7 +1,9 @@
 /node_modules
 /dist
-/src/Gallery.js
+/src/Scrollable.js
 /.idea
 package-lock.json
 .env.local
 .env.staging.local
+.env.production
+.env.production.local

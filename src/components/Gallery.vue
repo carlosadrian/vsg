@@ -1,8 +1,8 @@
 <template>
     <section>
         <div class="gallery-clipping">
-            <h3 v-if="showWelcome">Gallery <button type="button" v-if="hasSupport" @click="enableGallery()">Enable the experience</button></h3>
-            <span class="lbl do-x"></span><span class="lbl do-y"></span>
+            <h1 v-if="showWelcome">Gallery <button type="button" v-if="hasSupport" @click="enableGallery()">Enable the experience</button></h1>
+            <span class="debug"></span>
             <ul>
                 <li v-for="(item) in items" :key="item.id">
                     <img :src="item.src" :alt="item.title" />
@@ -12,19 +12,19 @@
     </section>
 </template>
 <script lang="ts">
-    import Gallery from './../Gallery';
+    import Scrollable from './../Scrollable';
 
     export default {
         data() {
             return {
                 hasSupport: window.DeviceOrientationEvent && window.DeviceOrientationEvent.requestPermission,
-                showWelcome: true
+                showWelcome: true,
             }
         },
         props: ['items'],
         methods: {
             enableGallery() {
-                Gallery.init('.gallery-clipping');
+                Scrollable.init('.gallery-clipping');
                 this.$data.showWelcome = false;
             }
         }
@@ -32,7 +32,7 @@
 
 </script>
 <style scoped>
-    h3 {
+    h1 {
         color: #FFFFFF;
         background: #0000AB;
         position: fixed;
@@ -40,12 +40,14 @@
         left: 0;
         line-height: 2em;
         z-index: 1000;
+        padding: 0 1em;
     }
     .gallery-clipping {
         position: absolute;
-        top: -50%;
-        left: -25%;
-        width: 966px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        transition: left 0.1s linear;
     }
     ul, li {
         list-style: none;
@@ -53,27 +55,41 @@
         padding: 0;
     }
     ul {
-        width: 100%;
+        width: 1960px;
         position: relative;
         overflow: hidden;
     }
     li {
         display: inline-block;
-        width: 320px;
+        width: 280px;
         height: 548px;
         border: 1px solid #000000;
         float: left;
+        overflow: hidden;
     }
-    .lbl {
+    button {
+        border: 0;
+        padding: 1em;
+        border-radius: 2px;
+        background: #00b669;
+        color: #FFFFFF;
+        width: 25em;
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-left: -12.5em;
+        margin-top: -1.5em;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        word-spacing: 0.5em;
+    }
+    .debug {
         position: fixed;
         top: 0;
+        left: 2em;
         z-index: 10000;
     }
-    .do-x {
-        left: 2em;
-    }
-    .do-y {
-        left: 10em;
-    }
+
 </style>
 

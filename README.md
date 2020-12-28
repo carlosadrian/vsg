@@ -1,14 +1,14 @@
-# Vue Sphere Gallery
+# Vue Scrollable Gallery
 
-***Work in progress***
+***Work in progress, some references may change***
 
-This gallery works with `DeviceOrientationEvent`, it moves around when you move your device.
+Gallery that scrolls by device inclination.
 
-Interaction is enabled by user interaction and requesting a browser permission.
+Vue based elemental gallery, items are loaded remotely using **axios**. Detecting `DeviceOrientationEvent`, gallery scrolls on any direction when you move your device.
 
-It works with Vue to render the gallery and an additional driver in TypeScript for the device motion lecture.
+Interaction is enabled by user prompt according to W3C specification.
 
-Although it is Vue based and SFC is being used, it will require some additional steps like transpile TS code.
+<abbr title="Single File Component">SFC</abbr> is being used. Driver to read `DeviceOrientationEvent` and set coordinates is written in TypeScript.
 
 **SSL is required to get `DeviceOrientationEvent` working**
 
@@ -17,11 +17,23 @@ Although it is Vue based and SFC is being used, it will require some additional 
 In project root directory: `npm install`
 
 ## Serve and build
-`tsc src/Gallery.ts -t ES2016` To transpile the TypeScript module
+It is recommended to use `vue-cli`, but you can use `webpack` as well. 
 
-` vue serve src/index.js`
+`tsc src/Scrollable.ts -t ES2020` To transpile the TypeScript module
 
-` vue build src/index.js`
+`vue serve src/index.js` To launch only gallery
+
+`vue build src/index.js` To export
+
+`vue-cli-service serve --https` To launch gallery and `deviceorientation` interaction.
+
+## JSON Structure for default gallery items
+    {
+        id: int,
+        title: string,
+        src: string
+    }
+
 
 ## Compatibility
 It works fine in recent versions of Firefox for iOS as of December 2020.
@@ -29,7 +41,6 @@ It works fine in recent versions of Firefox for iOS as of December 2020.
 For full browser compatibility, take a look at https://developer.mozilla.org/en-US/docs/Web/API/Detecting_device_orientation#Browser_compatibility
 
 ### WIP
-Debug info for `gamma` and `beta` degrees on-screen.
-
+Debug info for `gamma`, `beta` and position on-screen.
 
 *Thank's*

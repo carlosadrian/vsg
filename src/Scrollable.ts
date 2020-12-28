@@ -9,19 +9,19 @@
  * @version dev / WIP
  */
 
-type GalleryPosition = { x: number, y: number };
-type GalleryTheshold = { deg: number, px: number};
+type ScrollablePosition = { x: number, y: number };
+type ScrollableThreshold = { deg: number, px: number};
 
-export default class Gallery {
+export default class Scrollable {
 
     selector : string;
 
-    position: GalleryPosition = {
+    position: ScrollablePosition = {
         x: 0,
         y: 0
     };
 
-    previous : GalleryPosition = {
+    previous : ScrollablePosition = {
         x: 0,
         y: 0,
     };
@@ -37,7 +37,7 @@ export default class Gallery {
     positionFactorY : number;
 
     // How many degrees makes the grid moves 1 pixel
-    threshold: GalleryTheshold = {
+    threshold: ScrollableThreshold = {
         deg: 10,
         px: 3
     };
@@ -51,33 +51,40 @@ export default class Gallery {
      * @param e DeviceOrientationEvent The event returned with proper coordinates
      * e.absolute
      * e.alpha rotation 360 deg
-     * e.beta ↕
-     * e.gamma ◄ ►
+     * e.beta ↕ along y axis
+     * e.gamma ◄ ► along x axis
      */
-    setPosition(element: HTMLElement, e: DeviceOrientationEvent) : GalleryPosition {
+    setPosition(element: HTMLElement, e: DeviceOrientationEvent) : ScrollablePosition {
         let gamma = parseFloat(e.gamma.toPrecision(4)),
             beta = parseFloat(e.beta.toPrecision(4)),
+            draggable = element.querySelector('ul'),
             posY,
             posX;
 
         this.offsetX = (element.clientWidth / 6) + 2;
-        this.offsetY = (element.querySelector('ul').clientHeight / 2) + 2;
-        this.positionFactorX = 10.2;
-        this.positionFactorY = 34.8;
-
-        document.querySelector('.do-x').textContent = gamma.toString();
-        document.querySelector('.do-y').textContent = beta.toString();
+        this.offsetY = (draggable.clientHeight / 2) + 2;
+        this.positionFactorX = (draggable.clientWidth / 30);
+        this.positionFactorY = (draggable.clientHeight / 40);
 
         // Set coordinates at top / left
-        posY = ((beta * this.positionFactorY) - this.offsetY);
-        posX = ((gamma * this.positionFactorX) - this.offsetX);
-        if(posY < 0)
-            element.style.top = posY.toString() + 'px';
+        posX = ((gamma * this.positionFactorX) - this.offsetX).toPrecision(4);
+        posY = ((beta * this.positionFactorY) - this.offsetY).toPrecision(4);
 
         if(posX < 0)
-            element.style.left =  posX.toString() + 'px';
+            element.style.left =  posX + 'px';
 
-        return this.position;
+        if(posY < 0)
+            element.style.top = posY + 'px';
+
+        if(process.env.VUE_APP_DEBUG_ENABLED) {
+            this.debug(`${gamma.toString()} , ${beta.toString()}. Position: ${posX}, ${posY}`);
+        }
+
+        return { x: posX, y: posY }; // this.position;
+    }
+
+    debug(msg : string): void {
+        document.querySelector('.debug').textContent = msg;
     }
 
     /**
@@ -87,15 +94,14 @@ export default class Gallery {
         // Event handling
         DeviceOrientationEvent.requestPermission().then(function(response : string) {
             if(response === 'granted') {
-                //document.querySelector('h3').remove();
                 let element = document.querySelector(selector);
-                let g = new Gallery();
+                let g = new Scrollable();
                 window.addEventListener('deviceorientation', function(e) {
                     g.setPosition(element as HTMLElement, e);
                 });
             }
         }).catch(function(e : { message : string, [s : string] : any }) {
-            document.querySelector('h3').textContent += ' Nope: ' + e.message;
+            document.querySelector('.debug').textContent = ' Nope: ' + e.message;
         });
     }
 
